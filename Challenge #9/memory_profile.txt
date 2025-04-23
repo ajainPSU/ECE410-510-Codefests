@@ -1,0 +1,631 @@
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    29     71.7 MiB     71.7 MiB           1       @profile
+    30                                             def _init_tables(self):
+    31     71.7 MiB      0.0 MiB           1           x = 1
+    32     71.7 MiB      0.0 MiB         256           for i in range(255):
+    33     71.7 MiB      0.0 MiB         255               self.exp[i] = x
+    34     71.7 MiB      0.0 MiB         255               self.log[x] = i
+    35     71.7 MiB      0.0 MiB         255               x <<= 1
+    36     71.7 MiB      0.0 MiB         255               if x & 0x100:
+    37     71.7 MiB      0.0 MiB         128                   x ^= self.prim
+    38     71.7 MiB      0.0 MiB         258           for i in range(255, 512):
+    39     71.7 MiB      0.0 MiB         257               self.exp[i] = self.exp[i - 255]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    22     71.7 MiB     71.7 MiB           1       @profile
+    23                                             def __init__(self, prim=0x11D):
+    24     71.7 MiB      0.0 MiB           1           self.prim = prim
+    25     71.7 MiB      0.0 MiB           1           self.exp = [0] * 512
+    26     71.7 MiB      0.0 MiB           1           self.log = [0] * 256
+    27     71.7 MiB      0.0 MiB           1           self._init_tables()
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    62     71.7 MiB     71.7 MiB           1       @profile
+    63                                             def __init__(self, gf):
+    64     71.7 MiB      0.0 MiB           1           self.gf = gf
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   149     71.7 MiB     71.7 MiB           1       @profile
+   150                                             def __init__(self, trace_mode=False):
+   151     71.7 MiB      0.1 MiB           1           self.gf = GF256()
+   152     71.7 MiB      0.0 MiB           1           self.rs = ReedSolomonDecoder(self.gf)
+   153     71.7 MiB      0.0 MiB           1           self.transformer = PerspectiveTransformer()
+   154     71.7 MiB      0.0 MiB           1           self.trace_mode = trace_mode
+   155     71.7 MiB      0.0 MiB           1           self.trace_log = []
+
+
+[TRACE] {'label': 'load_image', 'data': {'shape': (400, 400)}}
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   157     73.3 MiB     73.3 MiB           1       @profile
+   158                                             def trace(self, label, data=None):
+   159     73.3 MiB      0.0 MiB           1           if self.trace_mode:
+   160     73.3 MiB      0.0 MiB           1               entry = {"label": label, "data": data}
+   161     73.3 MiB      0.0 MiB           1               self.trace_log.append(entry)
+   162     73.3 MiB      0.0 MiB           1               print("[TRACE]", entry)
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   164     71.7 MiB     71.7 MiB           1       @profile
+   165                                             def load_image(self, image_path):
+   166     73.1 MiB      1.4 MiB           1           img = Image.open(image_path).convert('L')
+   167     73.3 MiB      0.2 MiB           1           arr = np.array(img)
+   168     73.3 MiB      0.0 MiB           1           self.trace("load_image", {"shape": arr.shape})
+   169     73.3 MiB      0.0 MiB           1           return arr
+
+
+[TRACE] {'label': 'threshold_image', 'data': {'threshold': np.float64(128.8845875)}}
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   157     73.4 MiB     73.4 MiB           1       @profile
+   158                                             def trace(self, label, data=None):
+   159     73.4 MiB      0.0 MiB           1           if self.trace_mode:
+   160     73.4 MiB      0.0 MiB           1               entry = {"label": label, "data": data}
+   161     73.4 MiB      0.0 MiB           1               self.trace_log.append(entry)
+   162     73.4 MiB      0.0 MiB           1               print("[TRACE]", entry)
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   171     73.3 MiB     73.3 MiB           1       @profile
+   172                                             def threshold_image(self, img):
+   173     73.3 MiB      0.0 MiB           1           threshold = np.mean(img)
+   174     73.4 MiB      0.0 MiB           1           binary = (img > threshold).astype(np.uint8) * 255
+   175     73.4 MiB      0.0 MiB           1           self.trace("threshold_image", {"threshold": threshold})
+   176     73.4 MiB      0.0 MiB           1           return binary
+
+
+[TRACE] {'label': 'finder_patterns', 'data': [(7, 223), (55, 55), (55, 343)]}
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   157     74.2 MiB     74.2 MiB           1       @profile
+   158                                             def trace(self, label, data=None):
+   159     74.2 MiB      0.0 MiB           1           if self.trace_mode:
+   160     74.2 MiB      0.0 MiB           1               entry = {"label": label, "data": data}
+   161     74.2 MiB      0.0 MiB           1               self.trace_log.append(entry)
+   162     74.2 MiB      0.0 MiB           1               print("[TRACE]", entry)
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   178     73.4 MiB     73.4 MiB           1       @profile
+   179                                             def find_finder_patterns(self, binary):
+   180     74.0 MiB      0.6 MiB           1           label_img, num = label(binary)
+   181     74.2 MiB      0.2 MiB           1           centers = center_of_mass(binary, label_img, range(1, num + 1))
+   182     74.2 MiB      0.0 MiB          35           candidates = [tuple(map(int, c)) for c in centers if c[0] < binary.shape[0] and c[1] < binary.shape[1]]
+   183     74.2 MiB      0.0 MiB          69           candidates.sort(key=lambda c: (c[0], c[1]))
+   184     74.2 MiB      0.0 MiB           1           self.trace("finder_patterns", candidates[:3])
+   185     74.2 MiB      0.0 MiB           1           return candidates[:3]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   118     74.2 MiB     74.2 MiB           1       @staticmethod
+   119                                             @profile
+   120                                             def compute_homography(src_pts, dst_pts):
+   121     74.2 MiB      0.0 MiB           1           A = []
+   122     74.2 MiB      0.0 MiB           5           for (x, y), (u, v) in zip(src_pts, dst_pts):
+   123     74.2 MiB      0.0 MiB           4               A.append([-x, -y, -1, 0, 0, 0, x * u, y * u, u])
+   124     74.2 MiB      0.0 MiB           4               A.append([0, 0, 0, -x, -y, -1, x * v, y * v, v])
+   125     74.2 MiB      0.0 MiB           1           A = np.array(A)
+   126     74.5 MiB      0.3 MiB           1           _, _, Vt = np.linalg.svd(A)
+   127     74.5 MiB      0.0 MiB           1           H = Vt[-1].reshape(3, 3)
+   128     74.5 MiB      0.0 MiB           1           return H / H[2, 2]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   130     74.5 MiB     74.5 MiB           1       @staticmethod
+   131                                             @profile
+   132                                             def warp_image(image, H, output_size):
+   133     74.5 MiB      0.0 MiB           1           height, width = output_size
+   134     74.5 MiB      0.0 MiB           1           warped = np.zeros((height, width), dtype=np.uint8)
+   135     74.6 MiB      0.1 MiB           1           H_inv = np.linalg.inv(H)
+   136                                         
+   137     74.6 MiB      0.0 MiB          22           for y in range(height):
+   138     74.6 MiB      0.0 MiB         462               for x in range(width):
+   139     74.6 MiB      0.0 MiB         441                   pt = np.array([x, y, 1])
+   140     74.6 MiB      0.0 MiB         441                   dst = H_inv @ pt
+   141     74.6 MiB      0.0 MiB         441                   dst /= dst[2]
+   142     74.6 MiB      0.0 MiB         441                   ix, iy = int(round(dst[0])), int(round(dst[1]))
+   143     74.6 MiB      0.0 MiB         441                   if 0 <= ix < image.shape[1] and 0 <= iy < image.shape[0]:
+   144     74.6 MiB      0.0 MiB         441                       warped[y, x] = image[iy, ix]
+   145     74.6 MiB      0.0 MiB           1           return warped
+
+
+[TRACE] {'label': 'homography_matrix', 'data': [[0.17361111111113392, -0.06944444444444935, 14.270833333334272], [0.24305555555558658, 0.06944444444445871, -17.187500000002775], [1.2220747286561243e-15, 2.715721619235832e-16, 1.0]]}
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   157     74.6 MiB     74.6 MiB           1       @profile
+   158                                             def trace(self, label, data=None):
+   159     74.6 MiB      0.0 MiB           1           if self.trace_mode:
+   160     74.6 MiB      0.0 MiB           1               entry = {"label": label, "data": data}
+   161     74.6 MiB      0.0 MiB           1               self.trace_log.append(entry)
+   162     74.6 MiB      0.0 MiB           1               print("[TRACE]", entry)
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   187     74.2 MiB     74.2 MiB           1       @profile
+   188                                             def extract_qr_grid(self, img, finder_patterns, version=1):
+   189     74.2 MiB      0.0 MiB           1           tl, tr, bl = finder_patterns
+   190     74.2 MiB      0.0 MiB           1           module_count = 21 + (version - 1) * 4
+   191     74.2 MiB      0.0 MiB           1           br = (tr[0] - tl[0] + bl[0], tr[1] - tl[1] + bl[1])
+   192     74.2 MiB      0.0 MiB           1           src_pts = [tl, tr, br, bl]
+   193     74.2 MiB      0.0 MiB           1           dst_pts = [(0, 0), (module_count - 1, 0), (module_count - 1, module_count - 1), (0, module_count - 1)]
+   194     74.5 MiB      0.3 MiB           1           H = self.transformer.compute_homography(src_pts, dst_pts)
+   195     74.6 MiB      0.1 MiB           1           warped = self.transformer.warp_image(img, H, (module_count, module_count))
+   196     74.6 MiB      0.0 MiB           1           self.trace("homography_matrix", H.tolist())
+   197     74.6 MiB      0.0 MiB           1           return (warped > 128).astype(np.uint8)
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   205     74.6 MiB     74.6 MiB           1       @profile
+   206                                             def decode_mode(self, bits):
+   207     74.6 MiB      0.0 MiB           1           mode_indicator = bits[:4]
+   208     74.6 MiB      0.0 MiB           2           return {
+   209     74.6 MiB      0.0 MiB           1               '0001': "numeric",
+   210     74.6 MiB      0.0 MiB           1               '0010': "alphanumeric",
+   211     74.6 MiB      0.0 MiB           1               '0100': "byte",
+   212     74.6 MiB      0.0 MiB           1               '1000': "kanji"
+   213     74.6 MiB      0.0 MiB           1           }.get(mode_indicator, "unknown")
+
+
+[TRACE] {'label': 'qr_mode', 'data': 'unknown'}
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   157     74.6 MiB     74.6 MiB           1       @profile
+   158                                             def trace(self, label, data=None):
+   159     74.6 MiB      0.0 MiB           1           if self.trace_mode:
+   160     74.6 MiB      0.0 MiB           1               entry = {"label": label, "data": data}
+   161     74.6 MiB      0.0 MiB           1               self.trace_log.append(entry)
+   162     74.6 MiB      0.0 MiB           1               print("[TRACE]", entry)
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44     74.6 MiB      0.0 MiB           1               return 0
+    45                                                 return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44                                                     return 0
+    45     74.6 MiB      0.0 MiB           1           return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    53     74.6 MiB     74.6 MiB           1       @profile
+    54                                             def poly_eval(self, poly, x):
+    55     74.6 MiB      0.0 MiB           1           result = 0
+    56     74.6 MiB      0.0 MiB           3           for coef in poly:
+    57     74.6 MiB      0.0 MiB           2               result = self.mul(result, x) ^ coef
+    58     74.6 MiB      0.0 MiB           1           return result
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44     74.6 MiB      0.0 MiB           1               return 0
+    45                                                 return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44                                                     return 0
+    45     74.6 MiB      0.0 MiB           1           return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    53     74.6 MiB     74.6 MiB           1       @profile
+    54                                             def poly_eval(self, poly, x):
+    55     74.6 MiB      0.0 MiB           1           result = 0
+    56     74.6 MiB      0.0 MiB           3           for coef in poly:
+    57     74.6 MiB      0.0 MiB           2               result = self.mul(result, x) ^ coef
+    58     74.6 MiB      0.0 MiB           1           return result
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44     74.6 MiB      0.0 MiB           1               return 0
+    45                                                 return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44                                                     return 0
+    45     74.6 MiB      0.0 MiB           1           return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    53     74.6 MiB     74.6 MiB           1       @profile
+    54                                             def poly_eval(self, poly, x):
+    55     74.6 MiB      0.0 MiB           1           result = 0
+    56     74.6 MiB      0.0 MiB           3           for coef in poly:
+    57     74.6 MiB      0.0 MiB           2               result = self.mul(result, x) ^ coef
+    58     74.6 MiB      0.0 MiB           1           return result
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44     74.6 MiB      0.0 MiB           1               return 0
+    45                                                 return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44                                                     return 0
+    45     74.6 MiB      0.0 MiB           1           return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    53     74.6 MiB     74.6 MiB           1       @profile
+    54                                             def poly_eval(self, poly, x):
+    55     74.6 MiB      0.0 MiB           1           result = 0
+    56     74.6 MiB      0.0 MiB           3           for coef in poly:
+    57     74.6 MiB      0.0 MiB           2               result = self.mul(result, x) ^ coef
+    58     74.6 MiB      0.0 MiB           1           return result
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44     74.6 MiB      0.0 MiB           1               return 0
+    45                                                 return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44                                                     return 0
+    45     74.6 MiB      0.0 MiB           1           return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    53     74.6 MiB     74.6 MiB           1       @profile
+    54                                             def poly_eval(self, poly, x):
+    55     74.6 MiB      0.0 MiB           1           result = 0
+    56     74.6 MiB      0.0 MiB           3           for coef in poly:
+    57     74.6 MiB      0.0 MiB           2               result = self.mul(result, x) ^ coef
+    58     74.6 MiB      0.0 MiB           1           return result
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44     74.6 MiB      0.0 MiB           1               return 0
+    45                                                 return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44                                                     return 0
+    45     74.6 MiB      0.0 MiB           1           return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    53     74.6 MiB     74.6 MiB           1       @profile
+    54                                             def poly_eval(self, poly, x):
+    55     74.6 MiB      0.0 MiB           1           result = 0
+    56     74.6 MiB      0.0 MiB           3           for coef in poly:
+    57     74.6 MiB      0.0 MiB           2               result = self.mul(result, x) ^ coef
+    58     74.6 MiB      0.0 MiB           1           return result
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44     74.6 MiB      0.0 MiB           1               return 0
+    45                                                 return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44                                                     return 0
+    45     74.6 MiB      0.0 MiB           1           return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    53     74.6 MiB     74.6 MiB           1       @profile
+    54                                             def poly_eval(self, poly, x):
+    55     74.6 MiB      0.0 MiB           1           result = 0
+    56     74.6 MiB      0.0 MiB           3           for coef in poly:
+    57     74.6 MiB      0.0 MiB           2               result = self.mul(result, x) ^ coef
+    58     74.6 MiB      0.0 MiB           1           return result
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    66     74.6 MiB     74.6 MiB           1       @profile
+    67                                             def calculate_syndromes(self, msg, nsym):
+    68     74.6 MiB      0.0 MiB           8           return [self.gf.poly_eval(msg, self.gf.exp[i]) for i in range(nsym)]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44     74.6 MiB      0.0 MiB           1               return 0
+    45                                                 return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    41     74.6 MiB     74.6 MiB           1       @profile
+    42                                             def mul(self, a, b):
+    43     74.6 MiB      0.0 MiB           1           if a == 0 or b == 0:
+    44     74.6 MiB      0.0 MiB           1               return 0
+    45                                                 return self.exp[self.log[a] + self.log[b]]
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    53     74.6 MiB     74.6 MiB           1       @profile
+    54                                             def poly_eval(self, poly, x):
+    55     74.6 MiB      0.0 MiB           1           result = 0
+    56     74.6 MiB      0.0 MiB           3           for coef in poly:
+    57     74.6 MiB      0.0 MiB           2               result = self.mul(result, x) ^ coef
+    58     74.6 MiB      0.0 MiB           1           return result
+
+
+Error: old_loc evaluates to zero at iteration 0
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    70     74.6 MiB     74.6 MiB           1       @profile
+    71                                             def correct_errors(self, msg, nsym):  # Properly indented to be part of the class
+    72     74.6 MiB      0.0 MiB           1           syndromes = self.calculate_syndromes(msg, nsym)
+    73     74.6 MiB      0.0 MiB           1           if max(syndromes) == 0:
+    74                                                     return msg  # No errors
+    75                                         
+    76     74.6 MiB      0.0 MiB           1           err_loc = [1]
+    77     74.6 MiB      0.0 MiB           1           old_loc = [1]
+    78     74.6 MiB      0.0 MiB           1           for i in range(nsym):
+    79     74.6 MiB      0.0 MiB           1               delta = syndromes[i]
+    80     74.6 MiB      0.0 MiB           1               for j in range(1, len(err_loc)):
+    81                                                         delta ^= self.gf.mul(err_loc[-(j+1)], syndromes[i - j])
+    82     74.6 MiB      0.0 MiB           1               old_loc.append(0)
+    83     74.6 MiB      0.0 MiB           1               if delta != 0:
+    84     74.6 MiB      0.0 MiB           1                   if len(old_loc) > len(err_loc):
+    85     74.6 MiB      0.0 MiB           3                       new_loc = [c for c in old_loc]
+    86     74.6 MiB      0.0 MiB           1                       if self.gf.poly_eval(old_loc, 0) == 0:
+    87     74.6 MiB      0.0 MiB           1                           print(f"Error: old_loc evaluates to zero at iteration {i}")
+    88     74.6 MiB      0.0 MiB           1                           return msg  # Fallback to uncorrected data
+    89                                                             scale = self.gf.div(delta, self.gf.poly_eval(old_loc, 0))
+    90                                                             old_loc = [self.gf.mul(c, scale) for c in err_loc]
+    91                                                             err_loc = new_loc
+    92                                                         err_loc = [c ^ self.gf.mul(delta, t) for c, t in zip(err_loc + [0], old_loc)]
+    93                                         
+    94                                                 err_pos = []
+    95                                                 for i in range(len(msg)):
+    96                                                     if self.gf.poly_eval(err_loc, self.gf.exp[255 - i]) == 0:
+    97                                                         err_pos.append(i)
+    98                                                 if len(err_pos) != len(err_loc) - 1:
+    99                                                     raise ValueError("Too many errors to correct")
+   100                                         
+   101                                                 for pos in err_pos:
+   102                                                     x = self.gf.exp[255 - pos]
+   103                                                     y = self.gf.poly_eval(syndromes[::-1], x)
+   104                                                     denom = 1
+   105                                                     for i in range(len(err_loc)):
+   106                                                         if i != pos:
+   107                                                             denom = self.gf.mul(denom, x ^ self.gf.exp[255 - i])
+   108                                                     if denom == 0:
+   109                                                         print(f"Error: Denominator evaluates to zero at position {pos}")
+   110                                                         return msg  # Fallback to uncorrected data
+   111                                                     err_mag = self.gf.div(y, denom)
+   112                                                     msg[pos] ^= err_mag
+   113                                         
+   114                                                 return msg
+
+
+[TRACE] {'label': 'corrected_codewords', 'data': [207, 206]}
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   157     74.6 MiB     74.6 MiB           1       @profile
+   158                                             def trace(self, label, data=None):
+   159     74.6 MiB      0.0 MiB           1           if self.trace_mode:
+   160     74.6 MiB      0.0 MiB           1               entry = {"label": label, "data": data}
+   161     74.6 MiB      0.0 MiB           1               self.trace_log.append(entry)
+   162     74.6 MiB      0.0 MiB           1               print("[TRACE]", entry)
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   199     74.6 MiB     74.6 MiB           1       @profile
+   200                                             def decode_codewords(self, codewords, ec_bytes):
+   201     74.6 MiB      0.0 MiB           1           corrected = self.rs.correct_errors(codewords[:], ec_bytes)
+   202     74.6 MiB      0.0 MiB           1           self.trace("corrected_codewords", corrected)
+   203     74.6 MiB      0.0 MiB           1           return corrected
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   215     74.6 MiB     74.6 MiB           1       @profile
+   216                                             def decode_payload(self, bits, mode):
+   217     74.6 MiB      0.0 MiB           1           if mode == "byte":
+   218                                                     n = int(bits[4:12], 2)
+   219                                                     chars = [chr(int(bits[12+i*8:20+i*8], 2)) for i in range(n)]
+   220                                                     return ''.join(chars)
+   221     74.6 MiB      0.0 MiB           1           return "[mode not implemented]"
+
+
+[TRACE] {'label': 'decoded_payload', 'data': '[mode not implemented]'}
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   157     74.6 MiB     74.6 MiB           1       @profile
+   158                                             def trace(self, label, data=None):
+   159     74.6 MiB      0.0 MiB           1           if self.trace_mode:
+   160     74.6 MiB      0.0 MiB           1               entry = {"label": label, "data": data}
+   161     74.6 MiB      0.0 MiB           1               self.trace_log.append(entry)
+   162     74.6 MiB      0.0 MiB           1               print("[TRACE]", entry)
+
+
+Filename: c:\Users\jaina\OneDrive\Documents\410 Project\IB.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   223     71.7 MiB     71.7 MiB           1       @profile
+   224                                             def recognize(self, image_path, version=1, ec_bytes=7):
+   225     73.3 MiB      1.6 MiB           1           img = self.load_image(image_path)
+   226     73.4 MiB      0.1 MiB           1           binary = self.threshold_image(img)
+   227     74.2 MiB      0.8 MiB           1           patterns = self.find_finder_patterns(binary)
+   228     74.6 MiB      0.4 MiB           1           grid = self.extract_qr_grid(binary, patterns, version)
+   229                                         
+   230     74.6 MiB      0.0 MiB          39           bits = ''.join(str(int(b > 0)) for row in grid[:version*4] for b in row[:version*4])
+   231     74.6 MiB      0.0 MiB           1           mode = self.decode_mode(bits)
+   232     74.6 MiB      0.0 MiB           1           self.trace("qr_mode", mode)
+   233                                         
+   234     74.6 MiB      0.0 MiB           3           raw_data = [int(bits[i:i+8], 2) for i in range(0, len(bits), 8) if len(bits[i:i+8]) == 8]
+   235     74.6 MiB      0.0 MiB           1           corrected = self.decode_codewords(raw_data, ec_bytes)
+   236                                         
+   237     74.6 MiB      0.0 MiB           1           payload = self.decode_payload(bits, mode)
+   238     74.6 MiB      0.0 MiB           1           self.trace("decoded_payload", payload)
+   239     74.6 MiB      0.0 MiB           1           return payload
+
+
