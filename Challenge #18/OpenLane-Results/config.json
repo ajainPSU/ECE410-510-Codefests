@@ -1,0 +1,6 @@
+{
+  "DESIGN_NAME": "qr_hw_accelerators",
+  "VERILOG_FILES": ["dir::qr_hw_accelerators.v"],
+  "CLOCK_PERIOD": 25,
+  "CLOCK_PORT": "clk"
+}
