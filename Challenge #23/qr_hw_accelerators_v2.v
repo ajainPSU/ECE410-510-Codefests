@@ -1,9 +1,9 @@
-// qr_hw_accelerators_RS_complete.v
-// Monolithic ASIC-ready QR hardware accelerator with:
-// - warp_image
+// -----------------------------
+// HW Accelerated Modules V2
 // - Full GF(256) modular arithmetic
 // - Reed-Solomon RS(255, k) decoder (syndromes, BMA, Chien, Forney)
 // - NSYM = 102 for QR versions 1–10 @ Level H
+// -----------------------------
 
 `timescale 1ns / 1ps
 
