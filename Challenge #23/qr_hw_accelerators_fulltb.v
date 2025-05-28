@@ -61,8 +61,8 @@ module qr_rs_hw_accel_tb;
         for (i = 0; i < CODE_LEN; i = i + 1)
             codeword[i] = i[7:0];
 
-        codeword[10] = codeword[10] ^ 8'h3F;
-        codeword[55] = codeword[55] ^ 8'hA2;
+	codeword[10] = codeword[10] ^ 8'h3F; // Original was 0x0A → XOR with 0x3F = 0x35
+	codeword[55] = codeword[55] ^ 8'hA2; // Original was 0x37 → XOR with 0xA2 = 0x95
 
         #20 rst = 0;
         #20 start = 1;
