@@ -1313,7 +1313,7 @@ module chien_search #(
     input  logic clk,
     input  logic rst,
     input  logic start,
-    input  logic [M-1:0] lambda [0:NSYM],
+    input  logic [M-1:0] lambda [0:NSYM-1],
     output logic done,
     output logic [N-1:0] error_locations
 );
