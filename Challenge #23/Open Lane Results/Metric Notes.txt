@@ -1,0 +1,53 @@
+{
+  "DESIGN_NAME": "apply_corrections",
+  "VERILOG_FILES": ["dir::qr_hw_accelerators_v2.v"],
+  "CLOCK_PERIOD": 25,
+  "CLOCK_PORT": "clk",
+  "fp_auto_area": true,
+  "FP_SIZING": "absolute",
+  "DIE_AREA": "0 0 2250 2250",
+  "run_antenna_check": true,
+  "run_antenna_drc": true,
+  "antenna_cell_name": "sky130_fd_sc_hd__diode_2",
+  "tap_cell_antenna_fix_strategy": 2,
+  "run_openroad_antenna_check": true
+}
+
+
+{
+  ...
+  "run_antenna_check": true,
+  "run_antenna_drc": true,
+  "run_antenna_fix": true,
+  "antenna_cell_name": "sky130_fd_sc_hd__diode_2",   // Standard diode cell
+  "tap_cell_antenna_fix_strategy": 2,
+  "run_openroad_antenna_check": true
+}
+
+\\wsl$\Ubuntu\home\jaina\hw_design2\410D2
+
+'/home/jaina/hw_design2/410D2/runs/RUN_2025-05-28_13-19-24/final'
+
+nix-shell:~/hw_design2/410D2/runs/RUN_2025-05-28_13-19-24/final]$ cat metrics.json
+
+Data Timing/Frequency:
+"timing__setup__ws": 13.246904392808464  // in nanoseconds
+
+F_max ≈ 1 / (setup_slack) = 1 / (13.2469e-9) ≈ 75.49 MHz
+For Maximum Clock Frequency
+
+Data Power Consumption:
+"power__internal__total":   0.006555 W
+"power__switching__total": 0.005355 W
+"power__leakage__total":   0.000000414 W
+"power__total":            0.011911 W
+
+Internal: 6.56 mW
+Switching: 5.36 mW
+Leakage: 0.0004 mW
+
+Data Transistors:
+"design__instance__count__stdcell": 81518
+Estimated Transistor Count = 81518 × 6 ≈ 489,108
+
+Assuming estimated of ~6 transistors a cell
