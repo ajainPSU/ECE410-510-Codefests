@@ -1,0 +1,26 @@
+# Language and simulator
+TOPLEVEL_LANG = verilog
+SIM = verilator
+
+# Verilog sources (update if you split modules)
+VERILOG_SOURCES = $(shell pwd)/qr_verilog_modules.v
+
+# Top-level module in your Verilog design
+TOPLEVEL = spi_rs_top
+
+# Cocotb testbench (Python module name, without .py)
+MODULE = cocotb_testbench
+
+# Enable waveform dump (optional)
+WAVES = 1
+EXTRA_ARGS += --trace
+
+# Export necessary environment variables for cocotb
+export PYTHONPATH := $(shell pwd)
+export COCOTB_RESOLVE_MODULES := 1
+
+# Verilator compile flags (optional, remove if not needed)
+VERILATOR_COMPILE_ARGS += -Wall --cc --exe --build --trace
+
+# Target
+include $(shell cocotb-config --makefiles)/Makefile.sim
