@@ -1,5 +1,5 @@
 // Testbench for Monolithic QR Reed-Solomon Hardware Accelerator (NSYM=102)
-// Only for syndrome -- results are Results 1A-1E
+// Only for syndrome -- results are Results 1A-1F
 `timescale 1ns / 1ps
 
 module qr_rs_hw_accel_tb();
